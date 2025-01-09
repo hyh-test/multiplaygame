@@ -17,5 +17,4 @@ message JoinGamePayload {
 message LocationUpdatePayload {
   float x = 1;
   float y = 2;
-  string gameId = 3;
 }

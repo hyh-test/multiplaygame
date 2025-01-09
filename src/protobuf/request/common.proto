@@ -8,7 +8,6 @@ message Packet {
   string userId = 2;         // 유저 ID (UUID, 16바이트)
   string clientVersion = 3;  // 클라이언트 버전 (문자열)
   bytes payload = 4;         // 실제 데이터
-  uint32 sequence = 5;       // 유저의 호출 수 (42억)
 }
 
 // Ping 메시지
