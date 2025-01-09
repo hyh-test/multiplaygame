@@ -1,17 +1,14 @@
-import IntervalManager from "../managers/interval.manager.js";
 import {
   createLocationPacket,
   gameStartNotification,
 } from "../../utils/notification/game.notification.js";
 
-const MAX_PLAYERS = 2;
+const MAX_PLAYERS = 10;
 
 class Game {
   constructor(id) {
     this.id = id;
     this.users = [];
-    this.intervalManager = new IntervalManager();
-    this.state = "waiting"; // 'waiting', 'inProgress'
   }
 
   addUser(user) {
@@ -20,12 +17,6 @@ class Game {
     }
     this.users.push(user);
 
-    this.intervalManager.addPlayer(user.id, user.ping.bind(user), 1000);
-    if (this.users.length === MAX_PLAYERS) {
-      setTimeout(() => {
-        this.startGame();
-      }, 3000);
-    }
   }
 
   getUser(userId) {

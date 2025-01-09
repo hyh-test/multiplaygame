@@ -10,10 +10,11 @@ import {
   findUserByDeviceID,
   updateUserLogin,
 } from "../../db/user/user.db.js";
+import { getGameSession } from "../../session/game.session.js";
 
 const initialHandler = async ({ socket, userId, payload }) => {
   try {
-    const { deviceId } = payload;
+    const { deviceId, playerId, latency } = payload;
 
     let user = await findUserByDeviceID(deviceId);
 
@@ -24,6 +25,8 @@ const initialHandler = async ({ socket, userId, payload }) => {
     }
 
     addUser(user.id, socket);
+    let gameSession = getGameSession()
+    gameSession.addUser(user);
 
     // 유저 정보 응답 생성
     const initialResponse = createResponse(
