@@ -16,24 +16,33 @@ const initialHandler = async ({ socket, userId, payload }) => {
   try {
     const { deviceId, playerId, latency } = payload;
 
-    let user = await findUserByDeviceID(deviceId);
+    console.log("playerId, latency,", playerId, latency);
+    console.log("Received latency:", latency);
 
-    if (!user) {
-      user = await createUser(deviceId);
+    let userData = await findUserByDeviceID(deviceId);
+
+    if (!userData) {
+      userData = await createUser(deviceId);
     } else {
-      await updateUserLogin(user.id);
+      await updateUserLogin(userData.id);
     }
+    const user = addUser(socket, deviceId, playerId, latency);
 
-    addUser(user.id, socket);
-    let gameSession = getGameSession()
+    const gameSession = getGameSession();
+    if (gameSession.getUser(userData.deviceId)) {
+      throw new CustomError(
+        ErrorCodes.USER_ALREADY_EXIST,
+        "해당 유저가 이미 존재합니다."
+      );
+    }
     gameSession.addUser(user);
 
     // 유저 정보 응답 생성
     const initialResponse = createResponse(
       HANDLER_IDS.INITIAL,
       RESPONSE_SUCCESS_CODE,
-      { userId: user.id },
-      deviceId
+      deviceId,
+      { userId: user.id }
     );
 
     // 소켓을 통해 클라이언트에게 응답 메시지 전송

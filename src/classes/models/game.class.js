@@ -16,7 +16,6 @@ class Game {
       throw new Error("Game session is full");
     }
     this.users.push(user);
-
   }
 
   getUser(userId) {
@@ -37,6 +36,7 @@ class Game {
     this.users.forEach((user) => {
       maxLatency = Math.max(maxLatency, user.latency);
     });
+
     return maxLatency;
   }
 
@@ -52,7 +52,6 @@ class Game {
 
   getAllLocation() {
     const maxLatency = this.getMaxLatency();
-
     const locationData = this.users.map((user) => {
       const { x, y } = user.calculatePosition(maxLatency);
       return { id: user.id, x, y };
