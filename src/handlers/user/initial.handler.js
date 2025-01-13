@@ -10,7 +10,9 @@ import {
   findUserByDeviceID,
   updateUserLogin,
 } from "../../db/user/user.db.js";
-import { getGameSession } from "../../session/game.session.js";
+import { getGameSession, addGameSession } from "../../session/game.session.js";
+
+const gameId = 1000000;
 
 const initialHandler = async ({ socket, userId, payload }) => {
   try {
@@ -26,23 +28,29 @@ const initialHandler = async ({ socket, userId, payload }) => {
     } else {
       await updateUserLogin(userData.id);
     }
+
     const user = addUser(socket, deviceId, playerId, latency);
 
-    const gameSession = getGameSession();
+    let gameSession = getGameSession(gameId);
+    if (!gameSession) {
+      gameSession = addGameSession(gameId);
+    }
+
     if (gameSession.getUser(userData.deviceId)) {
       throw new CustomError(
         ErrorCodes.USER_ALREADY_EXIST,
         "해당 유저가 이미 존재합니다."
       );
     }
+
     gameSession.addUser(user);
 
     // 유저 정보 응답 생성
     const initialResponse = createResponse(
       HANDLER_IDS.INITIAL,
       RESPONSE_SUCCESS_CODE,
-      deviceId,
-      { userId: user.id }
+      { userId: user.id },
+      deviceId
     );
 
     // 소켓을 통해 클라이언트에게 응답 메시지 전송
