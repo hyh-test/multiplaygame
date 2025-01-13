@@ -17,13 +17,9 @@ class User {
     this.lastUpdateTime = Date.now();
   }
 
-  getNextSequence() {
-    return ++this.sequence;
-  }
 
   ping() {
     const now = Date.now();
-
     // console.log(`${this.id}: ping`);
     this.socket.write(createPingPacket(now));
   }
@@ -36,15 +32,22 @@ class User {
     );
   }
 
-  // 추측항법을 사용하여 위치를 추정하는 메서드
-  calculatePosition(latency) {
-    const timeDiff = latency / 1000; // 레이턴시를 초 단위로 계산
-    const speed = 3; // 속도 고정
-    const distance = speed * timeDiff;
+  //  // 추측항법을 사용하여 위치를 추정하는 메서드 //이걸 바꾸기.
+  //  calculatePosition(latency) {
+  //   const timeDiff = latency / 1000; // 레이턴시를 초 단위로 계산
+  //   const speed = 1; // 속도 고정
+  //   const distance = speed * timeDiff;
 
-    // x, y 축에서 이동한 거리 계산
+  //   // x, y 축에서 이동한 거리 계산
+  //   return {
+  //     x: this.x + distance,
+  //     y: this.y,
+  //   };
+  // }
+  // 일단은 현재 위치를 리턴.
+  calculatePosition() {
     return {
-      x: this.x + distance,
+      x: this.x,
       y: this.y,
     };
   }

@@ -22,13 +22,12 @@ class Game {
     return this.users.find((user) => user.id === userId);
   }
 
-  removeUser(userId) {
-    this.users = this.users.filter((user) => user.id !== userId);
-    this.intervalManager.removePlayer(userId);
-
-    if (this.users.length < MAX_PLAYERS) {
-      this.state = "waiting";
+  removeUser(socket) {
+    const index = this.users.findIndex((user) => user.socket === socket);
+    if (index !== -1) {
+      return this.users.splice(index, 1)[0];
     }
+    aa;
   }
 
   getMaxLatency() {
@@ -50,10 +49,12 @@ class Game {
     });
   }
 
+  //위치 동기화 함수
   getAllLocation() {
     const maxLatency = this.getMaxLatency();
     const locationData = this.users.map((user) => {
-      const { x, y } = user.calculatePosition(maxLatency);
+      const { x, y } = user.calculatePosition();
+      //user.id는 클라이언트이 Device id이다.
       return { id: user.id, x, y };
     });
     return createLocationPacket(locationData);

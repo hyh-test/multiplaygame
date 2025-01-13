@@ -2,12 +2,14 @@ import { getGameSession } from "../../session/game.session.js";
 import { handleError } from "../../utils/error/errorHandler.js";
 import CustomError from "../../utils/error/customError.js";
 import { ErrorCodes } from "../../utils/error/errorCodes.js";
-import { gameSessions } from "../../session/sessions.js";
+
+
+const gameId = 1000000;
 
 const updateLocationHandler = ({ socket, userId, payload }) => {
   try {
-    const { gameId, x, y } = payload;
-    const gameSession = getGameSession();
+    const { x, y } = payload;
+    const gameSession = getGameSession(gameId);
 
     if (!gameSession) {
       throw new CustomError(
@@ -15,6 +17,7 @@ const updateLocationHandler = ({ socket, userId, payload }) => {
         "게임 세션을 찾을 수 없습니다."
       );
     }
+
     const user = gameSession.getUser(userId);
     if (!user) {
       throw new CustomError(
@@ -23,6 +26,7 @@ const updateLocationHandler = ({ socket, userId, payload }) => {
       );
     }
     user.updatePosition(x, y);
+
     const packet = gameSession.getAllLocation();
 
     socket.write(packet);
