@@ -11,7 +11,7 @@ export const packetParser = (data) => {
   const Packet = protoMessages.common.Packet;
   let packet;
   try {
-    packet = Packet.decode(data);
+    packet = Packet.decode(data); //데이터를 디코드 해서 넣어줌.
   } catch (error) {
     throw new CustomError(
       ErrorCodes.PACKET_DECODE_ERROR,
