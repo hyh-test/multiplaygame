@@ -14,6 +14,5 @@ export const packetNames = {
   },
   gameNotification: {
     LocationUpdate: "gameNotification.LocationUpdate",
-    Start: "gameNotification.Start",
   },
 };

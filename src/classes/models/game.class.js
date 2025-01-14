@@ -55,7 +55,7 @@ class Game {
     const locationData = this.users.map((user) => {
       const { x, y } = user.calculatePosition();
       //user.id는 클라이언트이 Device id이다.
-      return { id: user.id, x, y };
+      return { id: user.id, playerId: user.playerId, x, y };
     });
     return createLocationPacket(locationData);
   }

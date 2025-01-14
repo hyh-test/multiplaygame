@@ -31,11 +31,13 @@ const initialHandler = async ({ socket, userId, payload }) => {
 
     const user = addUser(socket, deviceId, playerId, latency);
 
+    //찾아서 없으면 만들고 있으면 그냥 가져오기.
     let gameSession = getGameSession(gameId);
     if (!gameSession) {
       gameSession = addGameSession(gameId);
     }
 
+    //만약 게임세션에 이미 이 유저가 존재할떄 
     if (gameSession.getUser(userData.deviceId)) {
       throw new CustomError(
         ErrorCodes.USER_ALREADY_EXIST,
@@ -49,7 +51,7 @@ const initialHandler = async ({ socket, userId, payload }) => {
     const initialResponse = createResponse(
       HANDLER_IDS.INITIAL,
       RESPONSE_SUCCESS_CODE,
-      { userId: user.id },
+      { userId: user.id, message : "게임참가완료" },
       deviceId
     );
 
