@@ -26,8 +26,8 @@ export const onData = (socket) => async (data) => {
     // 3. 패킷 전체 길이 확인 후 데이터 수신
     if (socket.buffer.length >= length) {
       // 패킷 데이터를 자르고 버퍼에서 제거
-      const packet = socket.buffer.slice(totalHeaderLength, length);
-      socket.buffer = socket.buffer.slice(length);
+      const packet = socket.buffer.slice(totalHeaderLength, length); //이건 이번에 쓸 패킷 자르기.
+      socket.buffer = socket.buffer.slice(length); //자르고 남은건 다음꺼니까 다시 넣어줌.
 
       try {
         switch (packetType) {

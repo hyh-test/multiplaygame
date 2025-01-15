@@ -9,6 +9,7 @@ import {
   createUser,
   findUserByDeviceID,
   updateUserLogin,
+  findUserLastpositionByID
 } from "../../db/user/user.db.js";
 import { getGameSession, addGameSession } from "../../session/game.session.js";
 
@@ -18,9 +19,6 @@ const initialHandler = async ({ socket, userId, payload }) => {
   try {
     const { deviceId, playerId, latency } = payload;
 
-    console.log("playerId, latency,", playerId, latency);
-    console.log("Received latency:", latency);
-
     let userData = await findUserByDeviceID(deviceId);
 
     if (!userData) {
@@ -28,8 +26,18 @@ const initialHandler = async ({ socket, userId, payload }) => {
     } else {
       await updateUserLogin(userData.id);
     }
+    
+    console.log(userData.id)
+    // 해당 유저의 마지막 위치를 가져온다.
+    const lastpositon = await findUserLastpositionByID(userData.id);
+    console.log(lastpositon)
 
     const user = addUser(socket, deviceId, playerId, latency);
+
+    user.x = lastpositon.x;
+    user.y = lastpositon.y;
+
+    console.log("불러온", user.x,user.y)
 
     //찾아서 없으면 만들고 있으면 그냥 가져오기.
     let gameSession = getGameSession(gameId);
@@ -51,7 +59,12 @@ const initialHandler = async ({ socket, userId, payload }) => {
     const initialResponse = createResponse(
       HANDLER_IDS.INITIAL,
       RESPONSE_SUCCESS_CODE,
-      { userId: user.id, message : "게임참가완료" },
+      {
+        userId: user.id,
+        x: user.x,
+        y: user.y, 
+        message: "게임참가완료"
+      },
       deviceId
     );
 

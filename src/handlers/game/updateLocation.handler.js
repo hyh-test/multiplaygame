@@ -3,7 +3,6 @@ import { handleError } from "../../utils/error/errorHandler.js";
 import CustomError from "../../utils/error/customError.js";
 import { ErrorCodes } from "../../utils/error/errorCodes.js";
 
-
 const gameId = 1000000;
 
 const updateLocationHandler = ({ socket, userId, payload }) => {
@@ -11,6 +10,7 @@ const updateLocationHandler = ({ socket, userId, payload }) => {
     const { x, y } = payload;
     const gameSession = getGameSession(gameId);
 
+    console.log("클라에서 가져온 x,y",x,y)
     if (!gameSession) {
       throw new CustomError(
         ErrorCodes.GAME_NOT_FOUND,
@@ -25,9 +25,9 @@ const updateLocationHandler = ({ socket, userId, payload }) => {
         "유저를 찾을 수 없습니다.!!"
       );
     }
-    
+
     user.updatePosition(x, y);
-  
+
     const packet = gameSession.getAllLocation();
 
     socket.write(packet);
