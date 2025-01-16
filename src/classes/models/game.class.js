@@ -52,7 +52,7 @@ class Game {
   getAllLocation() {
     const maxLatency = this.getMaxLatency();
     const locationData = this.users.map((user) => {
-      const { x, y } = user.calculatePosition();
+      const { x, y } = user.calculatePosition(maxLatency);
       //user.id는 클라이언트이 Device id이다.
       return { id: user.id, playerId: user.playerId, x, y };
     });
