@@ -27,17 +27,16 @@ const initialHandler = async ({ socket, userId, payload }) => {
       await updateUserLogin(userData.id);
     }
     
-    console.log(userData.id)
     // 해당 유저의 마지막 위치를 가져온다.
     const lastpositon = await findUserLastpositionByID(userData.id);
-    console.log(lastpositon)
+    console.log("lsatposition",lastpositon)
 
     const user = addUser(socket, deviceId, playerId, latency);
 
     user.x = lastpositon.x;
     user.y = lastpositon.y;
 
-    console.log("불러온", user.x,user.y)
+    console.log("불러온 x,y", user.x,user.y)
 
     //찾아서 없으면 만들고 있으면 그냥 가져오기.
     let gameSession = getGameSession(gameId);
@@ -63,7 +62,6 @@ const initialHandler = async ({ socket, userId, payload }) => {
         userId: user.id,
         x: user.x,
         y: user.y, 
-        message: "게임참가완료"
       },
       deviceId
     );

@@ -3,7 +3,6 @@ import { getGameSession } from "../session/game.session.js";
 import { getUserBySocket } from "../session/user.session.js";
 import { findUserByDeviceID, updateUserLastposition } from "../db/user/user.db.js";
 
-
 const gameId = 1000000;
 
 export const onEnd = (socket) => async () => {

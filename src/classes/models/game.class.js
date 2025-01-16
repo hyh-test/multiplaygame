@@ -26,8 +26,7 @@ class Game {
     const index = this.users.findIndex((user) => user.socket === socket);
     if (index !== -1) {
       return this.users.splice(index, 1)[0];
-    }
-    aa;
+    };
   }
 
   getMaxLatency() {

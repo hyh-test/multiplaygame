@@ -10,7 +10,6 @@ const updateLocationHandler = ({ socket, userId, payload }) => {
     const { x, y } = payload;
     const gameSession = getGameSession(gameId);
 
-    console.log("클라에서 가져온 x,y",x,y)
     if (!gameSession) {
       throw new CustomError(
         ErrorCodes.GAME_NOT_FOUND,
