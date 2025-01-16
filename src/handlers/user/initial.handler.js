@@ -9,7 +9,7 @@ import {
   createUser,
   findUserByDeviceID,
   updateUserLogin,
-  findUserLastpositionByID
+  findUserLastpositionByID,
 } from "../../db/user/user.db.js";
 import { getGameSession, addGameSession } from "../../session/game.session.js";
 
@@ -26,17 +26,13 @@ const initialHandler = async ({ socket, userId, payload }) => {
     } else {
       await updateUserLogin(userData.id);
     }
-    
+
     // 해당 유저의 마지막 위치를 가져온다.
     const lastpositon = await findUserLastpositionByID(userData.id);
-    console.log("lsatposition",lastpositon)
-
     const user = addUser(socket, deviceId, playerId, latency);
 
     user.x = lastpositon.x;
     user.y = lastpositon.y;
-
-    console.log("불러온 x,y", user.x,user.y)
 
     //찾아서 없으면 만들고 있으면 그냥 가져오기.
     let gameSession = getGameSession(gameId);
@@ -44,7 +40,7 @@ const initialHandler = async ({ socket, userId, payload }) => {
       gameSession = addGameSession(gameId);
     }
 
-    //만약 게임세션에 이미 이 유저가 존재할떄 
+    //만약 게임세션에 이미 이 유저가 존재할떄
     if (gameSession.getUser(userData.deviceId)) {
       throw new CustomError(
         ErrorCodes.USER_ALREADY_EXIST,
@@ -61,7 +57,7 @@ const initialHandler = async ({ socket, userId, payload }) => {
       {
         userId: user.id,
         x: user.x,
-        y: user.y, 
+        y: user.y,
       },
       deviceId
     );

@@ -42,7 +42,6 @@ export const gameStartNotification = (gameId, timestamp) => {
 export const createPingPacket = (timestamp) => {
   const protoMessages = getProtoMessages();
   const ping = protoMessages.common.Ping;
-
   const payload = { timestamp };
   const message = ping.create(payload);
   const pingPacket = ping.encode(message).finish();

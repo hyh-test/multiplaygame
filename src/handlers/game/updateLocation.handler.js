@@ -26,7 +26,6 @@ const updateLocationHandler = ({ socket, userId, payload }) => {
     }
 
     user.updatePosition(x, y);
-    console.log("클라에서 받은 x,y값", x, y)
 
     const packet = gameSession.getAllLocation();
     

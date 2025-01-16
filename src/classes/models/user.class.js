@@ -16,11 +16,11 @@ class User {
     // 현재 위치를 이전 위치로 갱신
     this.prevX = this.x;
     this.prevY = this.y;
-  
+
     // 새로운 위치를 현재 위치로 갱신
     this.x = x;
     this.y = y;
-  
+
     // 마지막 업데이트 시간 갱신
     this.lastUpdateTime = Date.now();
   }
@@ -49,7 +49,6 @@ class User {
 
     // 이동하지 않은 경우 예측하지 않음
     if (dx === 0 && dy === 0) {
-      console.log("No movement detected, skipping position prediction.");
       return { x: this.x, y: this.y }; // 이동하지 않으면 예측 없이 현재 위치 반환
     }
 
@@ -65,8 +64,6 @@ class User {
     // dx만 0일 경우 (수평 이동이 없을 때)
     if (dx === 0 && dy !== 0) {
       const predictedY = this.y + Math.sign(dy) * finalDistance;
-      console.log("Predicted position: ", this.x, predictedY);
-      console.log("----------------");
       return {
         x: this.x, // x 좌표는 그대로 두고
         y: predictedY, // y 좌표는 dy 방향으로 예측
@@ -76,8 +73,6 @@ class User {
     // dy만 0일 경우 (수직 이동이 없을 때)
     if (dy === 0 && dx !== 0) {
       const predictedX = this.prevX + Math.sign(dx) * finalDistance;
-      console.log("Predicted position: ", predictedX, this.y);
-      console.log("----------------");
       return {
         x: predictedX, // x 좌표는 dx 방향으로 예측
         y: this.y, // y 좌표는 그대로 두고
@@ -87,17 +82,6 @@ class User {
     // 이동한 방향으로 예측된 위치 계산
     const predictedX = this.prevX + Math.cos(direction) * finalDistance;
     const predictedY = this.prevY + Math.sin(direction) * finalDistance;
-
-  
-    console.log(this.prevX,this.prevY)
-    console.log(
-      "플러스된 값 ",
-      Math.cos(direction) * finalDistance,
-      Math.sin(direction) * finalDistance
-    );
-
-    console.log("Predicted position: ", predictedX, predictedY);
-    console.log("--------------------");
 
     // 예측된 위치를 반환
     return {
